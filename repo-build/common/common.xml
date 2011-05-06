@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="common-common"
+		xmlns:ivy="antlib:org.apache.ivy.ant"
+		xmlns:maven="antlib:org.apache.maven.artifact.ant"
+		xmlns:osgi="antlib:org.springframework.build.osgi">
+
+	<tstamp>
+		<format property="timestamp" pattern="yyyyMMddHHmmss" timezone="GMT"/>
+	</tstamp>
+
+<!-- Properties -->
+	<dirname property="repo.build.dir" file="${ant.file.common-common}/.."/>
+	<property file="${repo.build.dir}/common/common.properties"/>
+
+<!-- Global tasks -->
+	<condition property="adjusted.release.type" value="snapshot" else="${release.type}">
+		<equals arg1="integration" arg2="${release.type}"/>
+	</condition>
+
+	<condition property="ivy.haltonfailure" value="false" else="true">
+		<istrue value="${circular.dependency}"/>
+	</condition>
+
+<!-- Main targets -->
+	<target name="clean"
+			description="Removes the target directory.">
+		<delete quiet="true" dir="${target.dir}"/>
+	</target>
+
+	<target name="clean-ivy"
+			description="Removes the ivy cache directory.">
+		<fail message="The 'ivy.cache.dir' property must be set on this project.">
+			<condition>
+				<not>
+					<isset property="ivy.cache.dir"/>
+				</not>
+			</condition>
+		</fail>
+		<delete quiet="true" dir="${ivy.cache.dir}"/>
+	</target>
+
+	<target name="add-osgi"/>
+
+	<target name="publish" depends="publish-ivy, publish-maven"
+			description="Publish artifacts to the external ivy and maven repositories"/>
+
+	<target name="publish-ivy" depends="ivy.init, resolve, add-osgi"
+			description="Publish artifacts to the external ivy repository">
+		<ivy:publish resolver="local-publish" pubdate="${timestamp}" status="release" overwrite="true">
+			<artifacts pattern="${basedir}/target/[artifact].[ext]"/>
+			<artifacts pattern="${basedir}/[artifact].[ext]"/>
+		</ivy:publish>
+	</target>
+
+	<target name="publish-test" depends="ivy.init, add-osgi, resolve"
+			description="Publish artifacts to the external ivy repository">
+		<ivy:publish resolver="test-publish" pubdate="${timestamp}" status="release" overwrite="true">
+			<artifacts pattern="${basedir}/target/[artifact].[ext]"/>
+			<artifacts pattern="${basedir}/[artifact].[ext]"/>
+		</ivy:publish>
+	</target>
+
+	<target name="publish-maven"
+			depends="ivy.init, maven.init, publish-ivy, publish.maven.with.source, publish.maven.without.source"
+			description="Publish artifacts to the external maven repository"/>
+
+	<target name="osgi-validate" depends="ivy.init, osgi.init"
+			description="Validates that a bundle can resolve against it's dependencies.">
+		<ivy:cachepath resolveId="osgi.optional.classpath" pathid="osgi.optional.classpath"
+				conf="compile,optional,provided" type="jar" log="download-only"/>
+		<osgi:validate bundlePath="${jar.output.file}">
+			<equinoxPath refid="equinox.classpath"/>
+			<supportingBundlesPath refid="osgi.optional.classpath"/>
+		</osgi:validate>
+
+		<ivy:cachepath resolveId="osgi.compile.classpath" pathid="osgi.compile.classpath"
+				conf="compile,provided" type="jar" log="download-only"/>
+		<osgi:validate bundlePath="${jar.output.file}">
+			<equinoxPath refid="equinox.classpath"/>
+			<supportingBundlesPath refid="osgi.compile.classpath"/>
+		</osgi:validate>
+	</target>
+
+<!-- Other targets -->
+	<target name="ivy.init" unless="ivy.initialized">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" loaderRef="ivy.loader">
+			<classpath>
+				<path location="${ivy.lib.dir}/commons-codec.jar"/>
+				<path location="${ivy.lib.dir}/commons-httpclient.jar"/>
+				<path location="${ivy.lib.dir}/commons-logging.jar"/>
+				<path location="${ivy.lib.dir}/ivy.jar"/>
+				<path location="${ivy.lib.dir}/jets3t.jar"/>
+				<path location="${ivy.lib.dir}/org.springframework.build.aws.ivy.jar"/>
+			</classpath>
+		</taskdef>
+		<ivy:settings file="${ivy.settings.file}"/>
+		<property name="ivy.initialized" value="true"/>
+	</target>
+
+	<target name="bundlor.init" depends="ivy.init">
+		<ivy:cachepath resolveId="bundlor.classpath" pathid="bundlor.classpath" organisation="com.springsource.bundlor"
+				module="com.springsource.bundlor.ant" revision="${com.springsource.bundlor.ant.version}" conf="ant"
+				inline="true" type="jar" log="download-only"/>
+		<taskdef resource="com/springsource/bundlor/ant/antlib.xml" uri="antlib:com.springsource.bundlor.ant"
+				classpathref="bundlor.classpath" loaderRef="bundlor.loader"/>
+	</target>
+
+	<target name="maven.init" depends="ivy.init">
+		<ivy:cachepath resolveId="org.apache.maven.ant.classpath" pathid="org.apache.maven.ant.classpath"
+				organisation="org.apache.maven" module="com.springsource.org.apache.maven.ant"
+				revision="${org.apache.maven.ant.version}" inline="true" type="jar" log="download-only"/>
+		<taskdef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant"
+				classpathref="org.apache.maven.ant.classpath" loaderRef="org.apache.maven.ant.loader"/>
+		<maven:install-provider groupId="org.springframework.aws" artifactId="spring-aws-maven"
+				version="${spring.aws.maven.version}"/>
+		<available property="source.exists" file="${source-jar.input.file}"/>
+	</target>
+
+	<target name="publish.maven.with.source" if="source.exists">
+		<ivy:makepom ivyfile="${ivy.output.file}" pomfile="${pom.output.file}">
+			<mapping conf="compile" scope="compile"/>
+			<mapping conf="provided" scope="provided"/>
+			<mapping conf="runtime" scope="runtime"/>
+		</ivy:makepom>
+
+		<maven:install file="${jar.output.file}">
+			<localRepository path="${repo.build.dir}/../publish-dir/"/>
+			<pom file="${pom.output.file}"/>
+			<attach file="${source-jar.input.file}" classifier="sources"/>
+			<attach file="${license.input.file}" classifier="license" type="txt"/>
+		</maven:install>
+	</target>
+
+	<target name="publish.maven.without.source" unless="source.exists">
+		<ivy:makepom ivyfile="${ivy.output.file}" pomfile="${pom.output.file}">
+			<mapping conf="compile" scope="compile"/>
+			<mapping conf="provided" scope="provided"/>
+			<mapping conf="runtime" scope="runtime"/>
+		</ivy:makepom>
+
+		<maven:install file="${jar.output.file}">
+			<localRepository path="${repo.build.dir}/../publish-dir/"/>
+			<pom file="${pom.output.file}"/>
+			<attach file="${license.input.file}" classifier="license" type="txt"/>
+		</maven:install>
+	</target>
+
+	<target name="osgi.init" depends="ivy.init">
+		<ivy:cachepath resolveId="equinox.classpath" pathid="equinox.classpath" organisation="org.eclipse.osgi"
+			module="org.eclipse.osgi" revision="${org.eclipse.osgi.version}" type="jar" inline="true"
+			log="download-only"/>
+		<ivy:cachepath resolveId="ant.osgi.classpath" pathid="ant.osgi.classpath"
+				organisation="org.springframework.build" module="org.springframework.build.osgi"
+				revision="${org.springframework.build.osgi.version}" conf="runtime" type="jar" inline="true"
+				log="download-only"/>
+		<taskdef resource="org/springframework/build/osgi/antlib.xml" uri="antlib:org.springframework.build.osgi"
+			classpathref="ant.osgi.classpath"/>
+	</target>
+
+	<target name="resolve" depends="ivy.init">
+		<fail message="Dependency resolution requires an ${ivy.file} file to exist.">
+			<condition>
+				<not>
+					<available file="${ivy.file}"/>
+				</not>
+			</condition>
+		</fail>
+		<ivy:resolve file="${ivy.file}" haltonfailure="${ivy.haltonfailure}" log="download-only"/>
+	</target>
+
+</project>

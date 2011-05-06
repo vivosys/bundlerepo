@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+
+	<conf name="compile"	visibility="public"						description="Compile dependencies"/>
+	<conf name="optional"	visibility="public"	extends="compile"	description="Optional dependencies"/>
+	<conf name="provided" 	visibility="public"						description="Provided dependencies"/>
+	<conf name="runtime"	visibility="public"	extends="compile"	description="Runtime dependencies"/>
+
+</configurations>

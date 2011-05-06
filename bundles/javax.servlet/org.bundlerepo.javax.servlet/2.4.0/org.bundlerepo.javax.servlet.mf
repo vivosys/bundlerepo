@@ -1,0 +1,5 @@
+Bundle-SymbolicName: org.bundlerepo.javax.servlet
+Bundle-Name: Java Servlet API
+Bundle-ManifestVersion: 2
+Export-Package: 
+ javax.servlet.resources;version="2.4.0"

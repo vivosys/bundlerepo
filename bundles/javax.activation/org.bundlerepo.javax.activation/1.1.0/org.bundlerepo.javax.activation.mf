@@ -1,0 +1,5 @@
+Bundle-SymbolicName: org.bundlerepo.javax.activation
+Bundle-Name: Java Activation API
+Bundle-ManifestVersion: 2
+Excluded-Exports: 
+ com.sun.*

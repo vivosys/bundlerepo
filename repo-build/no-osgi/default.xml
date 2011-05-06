@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="default-no-osgi">
+
+	<import file="../common/common.xml"/>
+
+<!-- Main targets -->
+	<target name="publish" depends="copy.jar, publish-ivy, publish-maven"
+			description="Publish artifacts to the external ivy and maven repositories"/>
+
+<!-- Other targets -->
+	<target name="copy.jar">
+		<mkdir dir="${target.dir}"/>
+		<copy file="${jar.input.file}" tofile="${jar.output.file}"/>
+	</target>
+
+</project>

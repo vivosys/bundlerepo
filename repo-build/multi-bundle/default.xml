@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="multi-bundle-default" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<import file="../common/common.xml"/>
+
+<!-- Main targets -->
+	<target name="clean" depends="path.init" description="Clean all bundle areas">
+		<subant target="clean" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="add-osgi" depends="ivy.init, path.init, bundlor.init" description="Add OSGi for all bundle areas">
+		<subant target="add-osgi" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<reference refid="bundlor.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="publish" depends="ivy.init, path.init, bundlor.init, maven.init" description="Publish all bundle areas">
+		<subant target="publish" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<reference refid="bundlor.loader"/>
+			<reference refid="org.apache.maven.ant.loader" />
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="publish-ivy" depends="ivy.init, path.init, bundlor.init" description="Publish Ivy artifacts for all bundle areas">
+		<subant target="publish-ivy" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<reference refid="bundlor.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="publish-test" depends="ivy.init, path.init, bundlor.init" description="Publish Ivy artifacts for all bundle areas">
+		<subant target="publish-test" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<reference refid="bundlor.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="publish-maven" depends="ivy.init, path.init, bundlor.init, maven.init" description="Publish Maven artifacts for all bundle areas">
+		<subant target="publish-maven" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<reference refid="bundlor.loader"/>
+			<reference refid="org.apache.maven.ant.loader" />
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="osgi-validate" depends="ivy.init, path.init" description="Resolve Ivy dependencies for all bundle areas">
+		<subant target="osgi-validate" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+	<target name="resolve" depends="ivy.init, path.init" description="Resolve Ivy dependencies for all bundle areas">
+		<subant target="resolve" buildpathref="artifacts.path" inheritAll="false">
+			<reference refid="ivy.loader"/>
+			<property name="ivy.initialized" value="false"/>
+		</subant>
+	</target>
+
+<!-- Other targets -->
+	<target name="path.init" depends="ivy.init">
+		<ivy:buildlist reference="artifacts.path" skipbuildwithoutivy="true"> <!--onMissingDescriptor="skip"-->
+			<fileset dir="${basedir}/..">
+				<include name="**/build.xml" />
+				<exclude name="build-*/**"/>
+			</fileset>
+		</ivy:buildlist>
+		<dirname file="${basename}/.." property="root.dir"/>
+		<pathconvert property="artifacts.string" pathsep="${line.separator}  " dirsep=" - " refid="artifacts.path">
+			<chainedmapper>
+				<globmapper from="${root.dir}/*" to="*"/>
+			</chainedmapper>
+		</pathconvert>
+		<echo>Build Order:
+  ${artifacts.string}</echo>
+	</target>
+
+</project>

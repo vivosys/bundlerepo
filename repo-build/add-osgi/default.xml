@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="default-add-osgi" xmlns:ivy="antlib:org.apache.ivy.ant"
+		xmlns:bundlor="antlib:com.springsource.bundlor.ant">
+
+	<import file="../common/common.xml"/>
+
+<!-- Main targets -->
+	<target name="add-osgi" depends="bundlor.init"
+			description="Creates an OSGi compliant version of a JAR">
+		<mkdir dir="${target.dir}"/>
+		<bundlor:bundlor inputPath="${jar.input.file}" outputPath="${jar.output.file}" bundleVersion="${bundle.version}"
+			failOnWarnings="true" manifestTemplatePath="${manifest.template.file}" osgiProfilePath="${osgi.profile.path}"/>
+	</target>
+
+</project>

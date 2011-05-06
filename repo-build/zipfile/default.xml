@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="default-zipfile">
+
+	<import file="../common/common.xml"/>
+
+<!-- Main targets -->
+	<target name="publish" depends="publish-ivy"
+			description="Publish artifacts to the external ivy repository"/>
+
+</project>

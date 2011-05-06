@@ -1,0 +1,9 @@
+The contents of this repository are copyright © 2011 VMWare Inc. and others and are made available under the Eclipse
+Public License with the following exceptions:
+
+1. files in directories containing a file named "license.txt" are covered by the license in that file.
+2. files in directories containing a file with name ending in "license.txt" are covered by the license in that file.
+3. files in the directory repo-build/licenses are each covered by their own license.
+4. JAR files in ivy-cache-dir and elsewhere are covered by the licenses of their originating projects.
+
+See the file epl-v10.html for the Eclipse Public License.

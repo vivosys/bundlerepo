@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+
+	<typedef name="s3" classname="org.springframework.aws.ivy.S3Resolver"/>
+
+	<settings defaultResolver="external-lookup" defaultLatestStrategy="latest-lexico"/>
+
+	<caches resolutionCacheDir="${ivy.cache.dir}/resolution" repositoryCacheDir="${ivy.cache.dir}/repository"
+			ivyPattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+			artifactPattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+			useOrigin="true"/>
+
+	<macrodef name="s3repo">
+		<attribute name="bucket"/>
+		<attribute name="artifact.type"/>
+		<attribute name="release.type"/>
+		<s3 descriptor="required" accessKey="${accessKey}" secretKey="${secretKey}">
+			<ivy pattern="s3://@{bucket}/ivy/@{artifact.type}/@{release.type}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+			<artifact pattern="s3://@{bucket}/ivy/@{artifact.type}/@{release.type}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+		</s3>
+	</macrodef>
+
+	<resolvers>
+<!-- Publishing repositories -->
+		<filesystem name="local-publish" transactional="false">
+			<artifact pattern="${repo.build.dir}/../publish-dir/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+		</filesystem>
+		
+		<filesystem name="test-publish" transactional="false">
+			<artifact pattern="${user.home}/Desktop/test/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+		</filesystem>
+
+<!-- Lookup repositories -->
+		<chain name="external-lookup" returnFirst="true">
+			<resolver ref="test-publish"/>
+			<resolver ref="local-publish"/>
+			<s3repo name="bundle-external-repository"			bucket="repository.springsource.com" artifact.type="bundles" release.type="external"/>
+			<s3repo name="private-bundle-external-repository"	bucket="private.repository.springsource.com" artifact.type="bundles" release.type="external"/>
+			<s3repo name="library-external-repository"			bucket="repository.springsource.com" artifact.type="libraries" release.type="external"/>
+			<s3repo name="private-library-external-repository"	bucket="private.repository.springsource.com" artifact.type="libraries" release.type="external"/>
+		</chain>
+
+		<chain name="spring-portfolio-lookup" returnFirst="true">
+			<resolver ref="test-publish"/>
+			<resolver ref="local-publish"/>
+			<s3repo name="bundle-release-repository"	bucket="repository.springsource.com" artifact.type="bundles" release.type="release"/>
+			<s3repo name="bundle-milestone-repository"	bucket="repository.springsource.com" artifact.type="bundles" release.type="milestone"/>
+			<s3repo name="bundle-snapshot-repository"	bucket="repository.springsource.com" artifact.type="bundles" release.type="snapshot"/>
+			<s3repo name="private-bundle-release-repository"	bucket="private.repository.springsource.com" artifact.type="bundles" release.type="release"/>
+			<s3repo name="private-bundle-milestone-repository"	bucket="private.repository.springsource.com" artifact.type="bundles" release.type="milestone"/>
+			<s3repo name="private-bundle-snapshot-repository"	bucket="private.repository.springsource.com" artifact.type="bundles" release.type="snapshot"/>
+			<s3repo name="library-release-repository"	bucket="repository.springsource.com" artifact.type="libraries" release.type="release"/>
+			<s3repo name="library-milestone-repository"	bucket="repository.springsource.com" artifact.type="libraries" release.type="milestone"/>
+			<s3repo name="library-snapshot-repository"	bucket="repository.springsource.com" artifact.type="libraries" release.type="snapshot"/>
+			<s3repo name="private-library-release-repository"	bucket="private.repository.springsource.com" artifact.type="libraries" release.type="release"/>
+			<s3repo name="private-library-milestone-repository"	bucket="private.repository.springsource.com" artifact.type="libraries" release.type="milestone"/>
+			<s3repo name="private-library-snapshot-repository"	bucket="private.repository.springsource.com" artifact.type="libraries" release.type="snapshot"/>
+		</chain>
+	</resolvers>
+
+	<modules>
+		<module organisation="org.springframework.*"	name="*"			resolver="spring-portfolio-lookup"/>
+		<module organisation="com.springsource.*"		name="*"			resolver="spring-portfolio-lookup"/>
+		<module organisation="com.hyperic.*"			name="*"			resolver="spring-portfolio-lookup"/>
+	</modules>
+
+</ivysettings>
