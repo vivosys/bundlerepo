@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>org.bundlerepo.org.apache.commons.logging</artifactId>
+  <version>1.1.1</version>
+  <versioning>
+    <versions>
+      <version>1.1.1</version>
+    </versions>
+    <lastUpdated>20110506161337</lastUpdated>
+  </versioning>
+</metadata>
