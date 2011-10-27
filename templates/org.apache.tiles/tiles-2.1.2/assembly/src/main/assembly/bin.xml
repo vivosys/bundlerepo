@@ -1,0 +1,99 @@
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+    <includeSiteDirectory>false</includeSiteDirectory>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <includes>
+                <include>commons-logging:commons-logging-api</include>
+                <include>commons-beanutils:commons-beanutils</include>
+                <include>commons-digester:commons-digester</include>
+            </includes>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/lib/optional</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <excludes>
+                <exclude>org.apache.tiles:tiles-api</exclude>
+                <exclude>org.apache.tiles:tiles-core</exclude>
+                <exclude>org.apache.tiles:tiles-servlet</exclude>
+                <exclude>org.apache.tiles:tiles-jsp</exclude>
+                <exclude>org.apache.tiles:tiles-portlet</exclude>
+                <exclude>org.apache.tiles:tiles-compat</exclude>
+                <exclude>org.apache.tiles:tiles-test</exclude>
+                <exclude>commons-logging:commons-logging</exclude>
+                <exclude>commons-logging:commons-logging-api</exclude>
+                <exclude>commons-beanutils:commons-beanutils</exclude>
+                <exclude>commons-digester:commons-digester</exclude>
+                <exclude>net.sf.retrotranslator:retrotranslator-runtime</exclude>
+                <exclude>backport-util-concurrent:backport-util-concurrent</exclude>
+            </excludes>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <includes>
+                <include>org.apache.tiles:tiles-api</include>
+                <include>org.apache.tiles:tiles-core</include>
+                <include>org.apache.tiles:tiles-servlet</include>
+                <include>org.apache.tiles:tiles-jsp</include>
+                <include>org.apache.tiles:tiles-portlet</include>
+                <include>org.apache.tiles:tiles-compat</include>
+            </includes>
+            <excludes>
+                <exclude>*:j4</exclude>
+            </excludes>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/examples</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <includes>
+                <include>org.apache.tiles:tiles-test</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>..</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>LICENSE.txt</include>
+                <include>NOTICE.txt</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../target/site/apidocs</directory>
+            <outputDirectory>apidocs</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>../tiles-core/target/site/dtddoc</directory>
+            <outputDirectory>dtddoc</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>../tiles-jsp/target/site/tlddoc</directory>
+            <outputDirectory>tlddoc</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
