@@ -36,3 +36,7 @@ This bundle has some transitive dependencies such as a javax.servlet bundle whic
 bundles/org.eclipse.osgi/org.eclipse.osgi/3.7.0.v20110224 contains the files necessary for publishing
 the corresponding Equinox bundle. Since the Equinox project provides this as a bundle, no manifest
 template is required.
+
+Templates:
+
+Some sample bundlor templates are provided in the templates directory.
