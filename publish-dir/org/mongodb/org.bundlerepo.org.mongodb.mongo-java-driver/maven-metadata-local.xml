@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.mongodb</groupId>
+  <artifactId>org.bundlerepo.org.mongodb.mongo-java-driver</artifactId>
+  <version>2.6.5.osgi</version>
+  <versioning>
+    <versions>
+      <version>2.6.5.osgi</version>
+    </versions>
+    <lastUpdated>20111027072947</lastUpdated>
+  </versioning>
+</metadata>
