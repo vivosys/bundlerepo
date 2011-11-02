@@ -1,0 +1,7 @@
+Bundle-SymbolicName: org.bundlerepo.org.antlr.ST4
+Bundle-Name: ANTLR ST4
+Bundle-ManifestVersion: 2
+Import-Template: 
+ antlr.*;version="[2.7.0, 3.0.0)";resolution:=optional,
+ org.antlr.runtime.*;version="[3.3.0, 4.0.0)",
+ junit.*;version="[3.8.2, 5.0.0)";resolution:=optional

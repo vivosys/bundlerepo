@@ -1,0 +1,5 @@
+Bundle-SymbolicName: org.bundlerepo.org.antlr.runtime
+Bundle-Name: ANTLR Runtime
+Bundle-ManifestVersion: 2
+Import-Template:
+ org.antlr.stringtemplate;version="[3.2.1, 4.0.0)";resolution:=optional
