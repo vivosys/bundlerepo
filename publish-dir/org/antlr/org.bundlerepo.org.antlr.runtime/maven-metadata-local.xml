@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.antlr</groupId>
+  <artifactId>org.bundlerepo.org.antlr.runtime</artifactId>
+  <version>3.3.0</version>
+  <versioning>
+    <versions>
+      <version>3.3.0</version>
+    </versions>
+    <lastUpdated>20111102061314</lastUpdated>
+  </versioning>
+</metadata>
