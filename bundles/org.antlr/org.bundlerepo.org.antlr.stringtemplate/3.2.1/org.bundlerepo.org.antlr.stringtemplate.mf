@@ -1,0 +1,6 @@
+Bundle-SymbolicName: org.bundlerepo.org.antlr.stringtemplate
+Bundle-Name: ANTLR StringTemplate
+Bundle-ManifestVersion: 2
+Import-Template: 
+ antlr.*;version="[2.7.0, 3.0.0)";resolution:=optional,
+ junit.*;version="[3.8.2, 5.0.0)";resolution:=optional
