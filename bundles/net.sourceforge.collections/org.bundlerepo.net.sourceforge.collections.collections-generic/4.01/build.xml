@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.bundlerepo.net.sourceforge.collections.collections-generic">
+	<property name="version" value="4.01"/>
+	<property name="release.type" value="external"/>
+	<import file="${basedir}/../../../../repo-build/add-osgi/default.xml"/>
+</project>
