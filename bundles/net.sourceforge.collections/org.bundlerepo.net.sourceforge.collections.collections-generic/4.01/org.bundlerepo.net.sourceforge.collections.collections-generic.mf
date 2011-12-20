@@ -1,0 +1,3 @@
+Bundle-SymbolicName: org.bundlerepo.net.sourceforge.collections.collections-generic
+Bundle-Name: Commons Collections Generic
+Bundle-ManifestVersion: 2
