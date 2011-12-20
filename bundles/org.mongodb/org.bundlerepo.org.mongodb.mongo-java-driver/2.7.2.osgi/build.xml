@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.bundlerepo.org.mongodb.mongo-java-driver">
+	<property name="version" value="2.7.2.osgi"/>
+	<property name="release.type" value="external"/>
+	<import file="${basedir}/../../../../repo-build/add-osgi/default.xml"/>
+</project>
