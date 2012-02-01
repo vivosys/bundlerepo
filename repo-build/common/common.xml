@@ -129,6 +129,12 @@
 			<attach file="${source-jar.input.file}" classifier="sources"/>
 			<attach file="${license.input.file}" classifier="license" type="txt"/>
 		</maven:install>
+		<maven:deploy file="${jar.output.file}" settingsFile="${user.home}/.m2/settings.xml">
+			<remoteRepository id="vivosys-release" url="https://tools.vivosys.com/artifactory/ext-release-local"/>
+			<pom file="${pom.output.file}"/>
+			<attach file="${source-jar.input.file}" classifier="sources"/>
+			<attach file="${license.input.file}" classifier="license" type="txt"/>
+		</maven:deploy>
 	</target>
 
 	<target name="publish.maven.without.source" unless="source.exists">
@@ -143,6 +149,11 @@
 			<pom file="${pom.output.file}"/>
 			<attach file="${license.input.file}" classifier="license" type="txt"/>
 		</maven:install>
+		<maven:deploy file="${jar.output.file}" settingsFile="${user.home}/.m2/settings.xml">
+			<remoteRepository id="vivosys-release" url="https://tools.vivosys.com/artifactory/ext-release-local"/>
+			<pom file="${pom.output.file}"/>
+			<attach file="${license.input.file}" classifier="license" type="txt"/>
+		</maven:deploy>
 	</target>
 
 	<target name="osgi.init" depends="ivy.init">
