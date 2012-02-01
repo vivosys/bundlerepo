@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.bundlerepo.org.elasticsearch.elasticsearch">
+	<property name="version" value="0.18.7.osgi"/>
+	<property name="release.type" value="external"/>
+	<import file="${basedir}/../../../../repo-build/add-osgi/default.xml"/>
+</project>
