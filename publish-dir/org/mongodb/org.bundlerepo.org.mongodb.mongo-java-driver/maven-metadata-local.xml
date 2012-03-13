@@ -6,7 +6,8 @@
     <versions>
       <version>2.6.5.osgi</version>
       <version>2.7.2.osgi</version>
+      <version>2.7.3.osgi</version>
     </versions>
-    <lastUpdated>20111219235509</lastUpdated>
+    <lastUpdated>20120313010251</lastUpdated>
   </versioning>
 </metadata>
