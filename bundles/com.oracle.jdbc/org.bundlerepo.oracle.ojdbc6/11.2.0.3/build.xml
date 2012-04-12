@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.bundlerepo.oracle.ojdbc6">
+	<property name="version" value="11.2.0.3"/>
+	<property name="release.type" value="external"/>
+	<import file="${basedir}/../../../../repo-build/add-osgi/default.xml"/>
+</project>

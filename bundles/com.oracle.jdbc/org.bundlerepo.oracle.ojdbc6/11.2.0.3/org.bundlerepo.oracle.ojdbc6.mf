@@ -1,0 +1,9 @@
+Bundle-SymbolicName: org.bundlerepo.oracle.ojdbc6
+Bundle-Name: Oracle JDBC for Java 1.6 Driver
+Bundle-ManifestVersion: 2
+Import-Template:
+ com.sun.security.auth.module.*;version="0";resolution:=optional,
+ javax.resource.*;version="[1.5.0, 2.0.0)",
+ javax.transaction.*;version="[1.0.1, 2.0.0)";resolution:=optional,
+ oracle.*;version="[11.2.0.3, 11.3.0.0)";resolution:=optional,
+ org.objectweb.asm.*;version="[3.0.0, 4.0.0)";resolution:=optional
