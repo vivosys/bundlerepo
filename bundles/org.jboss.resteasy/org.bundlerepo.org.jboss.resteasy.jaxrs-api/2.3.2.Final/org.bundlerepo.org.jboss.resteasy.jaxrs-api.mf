@@ -1,0 +1,5 @@
+Bundle-SymbolicName: org.bundlerepo.org.jboss.resteasy.jaxrs-api
+Bundle-Name: JBoss RestEASY JaxRS API
+Bundle-ManifestVersion: 2
+Import-Template:
+ junit.*;version="[3.2.8, 5.0.0)";resolution:=optional
